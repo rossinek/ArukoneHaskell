@@ -1,5 +1,5 @@
- 
---import Data.Char
+import Control.Monad
+import Data.List
 
 type Generator a = [a]
 
@@ -32,9 +32,6 @@ wolne \\\	((h,w):ys) = (usun h w wolne) \\\ ys
 		usun h w (xs:xss) = xs : usun (h-1) w xss
 
 
-
-
-
 rozwiaz :: Zadanie -> Generator Wynik
 
 rozwiaz zadanie = szukaj wolne (paryPol zadanie)
@@ -46,17 +43,21 @@ rozwiaz zadanie = szukaj wolne (paryPol zadanie)
 		szukaj wolne [] = return []
 		szukaj wolne (paraPkt:reszta) =
 			do
-				xs <- sciezki paraPkt wolne
-				let noweWolne = (wolne \\\ xs)
+				--xs <- sciezki paraPkt wolne
+				(noweWolne,xs) <- sciezki paraPkt wolne
+				--let noweWolne = (wolne \\\ xs)
 				ys <- (szukaj noweWolne reszta)
 				return $ [xs] ++ ys
+		
 		sciezki (a,b) wolne =
-			if a==b then [[a]] else
+			if a==b then [(wolne,[a])] else
 				do
 					nast <- sasiedzi a
 					guard (nast == b || nast `myElem` wolne)
-					xs <- sciezki (nast,b) (wolne \\\ [nast])
-					return (a:xs)
+					--xs <- sciezki (nast,b) (wolne \\\ [nast])
+					(noweWolne,xs) <- sciezki (nast,b) (wolne \\\ [nast])
+					--return (a:xs)
+					return (noweWolne,(a:xs))
 		sasiedzi (a,b) 	= [(a,b+1),(a,b-1),(a+1,b),(a-1,b)]
 		naPlanszy (a,b) = a > 0 && a <= (liczbaKolumn zadanie) && b > 0 && b <= (liczbaWierszy zadanie)
 		_ `myElem` [] 			= False
