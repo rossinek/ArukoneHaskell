@@ -21,7 +21,7 @@ type Generator a = [a]
 type Pole = (Int,Int)
 type Sciezka = [Pole]
 type Wynik = [Sciezka]
-type Wolne = Map Pole Int
+type Wolne = Map Pole ()
 
 data Zadanie = Zadanie {
         liczbaWierszy :: Int,
@@ -30,7 +30,7 @@ data Zadanie = Zadanie {
      }
 
 plansza :: Int -> Int -> Wolne
-plansza h w = Map.fromList [ ((y,x),0) | y <- [1..h], x <- [1..w] ]
+plansza h w = Map.fromList [ ((y,x),()) | y <- [1..h], x <- [1..w] ]
 
 rozwiaz :: Zadanie -> Generator Wynik
 rozwiaz zadanie = szukaj wolne (paryPol zadanie)
