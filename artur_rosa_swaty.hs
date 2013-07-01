@@ -10,9 +10,9 @@ main = do
 	let plik = head args
 	s <- readFile plik
 	let [liczbaWierszyKropka,liczbaKolumnKropka,paryPolKropka] = lines s
-	let liczbaWierszy = read $ init liczbaWierszyKropka 	:: Int				-- init "ucina" ostatni znak - kropke
-	let liczbaKolumn = read $ init liczbaKolumnKropka 		:: Int				-- init "ucina" ostatni znak - kropke
-	let paryPol = read $ init paryPolKropka 				:: [(Pole,Pole)]	-- init "ucina" ostatni znak - kropke
+	let liczbaWierszy = read $ init liczbaWierszyKropka 	:: Int
+	let liczbaKolumn = read $ init liczbaKolumnKropka 		:: Int
+	let paryPol = read $ init paryPolKropka 				:: [(Pole,Pole)]
 	let rozwiazania = rozwiaz $ Zadanie liczbaWierszy liczbaKolumn paryPol
 	mapM_ print rozwiazania
 
